@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.mse.image_archive.model.Image;
+import ch.mse.image_archive.model.ImageDto;
 import ch.mse.image_archive.repository.ImageRepository;
 
 @Controller
@@ -79,11 +80,11 @@ public class ImageController {
 
     @GetMapping("/images")
     public String listUploadedFiles(Model model) throws IOException {
-        List<String> ids = StreamSupport.stream(imgRepo.findAll().spliterator(), false)
-                .map(img -> "images/" + img.getId())
+        List<ImageDto> images = StreamSupport.stream(imgRepo.findAll().spliterator(), false)
+                .map(img -> new ImageDto(img))
                 .collect(Collectors.toList());
 
-        model.addAttribute("files", ids);
+        model.addAttribute("files", images);
 
         return "uploadForm";
     }

@@ -22,11 +22,16 @@
     </div>
 
     <div>
-        <ul>
-            <li th:each="file : ${files}">
-                <a th:href="${file}" th:text="${file}" />
-            </li>
-        </ul>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            <tr th:each="file : ${files}">
+                <td><span th:text="${file.id}"></span></td>
+                <td><a th:href="${file.imagePath}" th:text="${file.imagePath}" /></td>
+            </tr>
+        </table>
     </div>
 
 </body>
