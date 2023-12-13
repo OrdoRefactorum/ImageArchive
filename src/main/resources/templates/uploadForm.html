@@ -29,7 +29,12 @@
             </tr>
             <tr th:each="file : ${files}">
                 <td><span th:text="${file.id}"></span></td>
-                <td><a th:href="${file.imagePath}" th:text="${file.imagePath}" /></td>
+                <td><a th:href="${file.imagePath}" th:text="${file.name}" /></td>
+                <td style="padding:10px">
+                    <a th:href="${file.imagePath}">
+                        <img th:src="${file.imagePath}" height="80px" />
+                    </a>
+                </td>
             </tr>
         </table>
     </div>

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
@@ -54,7 +53,7 @@ public class ImageController {
     @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     @Cacheable("images")
     public byte[] image(@PathVariable int id) throws IOException, SQLException {
-        System.out.println("File is loaded from actual ressources folder");
+        System.out.println("File is loaded from database");
         Optional<Image> img = imgRepo.findById(id);
         try (InputStream in = img.get().getContent().getBinaryStream()) {
             return in.readAllBytes();
@@ -65,6 +64,7 @@ public class ImageController {
     public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
             throws IOException, SerialException, SQLException {
         Image newImage = new Image();
+        newImage.setName(file.getOriginalFilename());
 
         InputStream in = file.getInputStream();
         Blob imgContent = new SerialBlob(in.readAllBytes());
@@ -75,7 +75,7 @@ public class ImageController {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return "redirect:/images";
     }
 
     @GetMapping("/images")
